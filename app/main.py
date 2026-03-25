@@ -1,8 +1,16 @@
 from fastapi import FastAPI
+from pydantic import BaseModel
 from app.database import collection
-from app.operations import run_cli_app
+from app.operations import insert_user,get_all_users,find_by_age,find_by_name,find_by_role
 
 app = FastAPI()
+
+class User(BaseModel):
+    name:str
+    age:int
+    role:str
+
+
 @app.get("/")
 def home():
     return {"message": "CI/CD Pipeline Running"}
@@ -19,7 +27,23 @@ def db_check():
     except Exception as e:
         return {"DB": "Error", "details": str(e)}
     
-@app.get("/db-ops")
-def operations():
-    run_cli_app()
-    
+@app.post("/insert")
+def insert(user: User):
+    return insert_user(user.name,user.age,user.role)
+
+
+@app.get("/users")
+def users():
+    return get_all_users()
+
+@app.get("/find/name")
+def find_name(name: str):
+    return find_by_name(name)
+
+@app.get("/find/role")
+def find_role(role: str):
+    return find_by_role(role)
+
+@app.get("/find/age")
+def find_age(age: int):
+    return find_by_age(age)
