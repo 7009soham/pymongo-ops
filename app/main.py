@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from app.database import collection
+from app.operations import run_cli_app
 
 app = FastAPI()
 @app.get("/")
@@ -17,3 +18,8 @@ def db_check():
         return {"DB": "Connected"}
     except Exception as e:
         return {"DB": "Error", "details": str(e)}
+    
+@app.get("/db-ops")
+def operations():
+    run_cli_app()
+    
