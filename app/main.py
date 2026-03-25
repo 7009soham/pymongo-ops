@@ -32,6 +32,7 @@ def insert(user: User):
     return insert_user(user.name,user.age,user.role)
 
 
+
 @app.get("/users")
 def users():
     return get_all_users()
