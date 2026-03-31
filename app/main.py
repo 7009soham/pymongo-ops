@@ -23,7 +23,7 @@ class User(BaseModel):
 
 @app.get("/")
 def home():
-    return {"message": "CI/CD Pipeline Running"}
+    return {"message": "CI/CD Pipeline Running and working just fine like me!"}
 
 @app.get("/health")
 def health():
