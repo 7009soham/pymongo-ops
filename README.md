@@ -3,7 +3,7 @@
 A FastAPI application backed by MongoDB (via **pymongo**), containerised with Docker and deployed to Amazon EKS. The project demonstrates a complete CI/CD pipeline where **CI is fully automated** (GitHub Actions → Amazon ECR) and **CD is intentionally manual** (Argo CD → EKS, with Karpenter managing node provisioning).
 
 ---
-
+updaeted
 ## Table of Contents
 
 - [Project Description](#project-description)
