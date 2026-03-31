@@ -1,4 +1,4 @@
-name: CI Pipeline with ECR
+name: CI Pipeline with ECR + GitOps
 
 on:
   push:
@@ -32,3 +32,18 @@ jobs:
     - name: Push to ECR
       run: |
         docker push ${{ secrets.ECR_URI }}:${IMAGE_TAG}
+
+    # 🔥 NEW STEP (GitOps Integration)
+    - name: Update GitOps Repo
+      run: |
+        git clone https://${{ secrets.GITOPS_REPO_TOKEN }}@github.com/<your-username>/pymongo-ops-deploy.git
+        cd pymongo-ops-deploy/k8s
+
+        sed -i "s|IMAGE_TAG|${IMAGE_TAG}|g" deployment.yaml
+
+        git config user.name "github-actions"
+        git config user.email "actions@github.com"
+
+        git add .
+        git commit -m "Update image to ${IMAGE_TAG}"
+        git push

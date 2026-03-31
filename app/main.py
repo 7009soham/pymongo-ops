@@ -2,8 +2,18 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 from app.database import collection
 from app.operations import insert_user,get_all_users,find_by_age,find_by_name,find_by_role
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 
 class User(BaseModel):
     name:str
