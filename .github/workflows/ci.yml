@@ -36,14 +36,28 @@ jobs:
     # 🔥 NEW STEP (GitOps Integration)
     - name: Update GitOps Repo
       run: |
-        git clone https://${{ secrets.GITOPS_REPO_TOKEN }}@github.com/7009soham/pymongo-ops-deploy.git
-        cd pymongo-ops-deploy/k8s
+        set -e   # 🔥 fail on error
 
-        sed -i "s|newTag:.*|newTag: ${IMAGE_TAG}|g" kustomization.yaml
+        git clone https://${{ secrets.GITOPS_REPO_TOKEN }}@github.com/7009soham/pymongo-ops-deploy.git
+
+        FILE="pymongo-ops-deploy/k8s/kustomization.yaml"
+
+        echo "📁 Checking file exists:"
+        ls -l $FILE
+
+        echo "📄 Before:"
+        cat $FILE
+
+        sed -i "s|newTag:.*|newTag: ${IMAGE_TAG}|g" $FILE
+
+        echo "✅ After:"
+        cat $FILE
+
+        cd pymongo-ops-deploy
 
         git config user.name "github-actions"
         git config user.email "actions@github.com"
 
         git add .
-        git commit -m "Update image to ${IMAGE_TAG}"
+        git commit -m "Update image to ${IMAGE_TAG}" || echo "No changes"
         git push
